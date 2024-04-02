@@ -1,0 +1,2 @@
+abbrev-alias sc='systemctl'
+abbrev-alias scu='systemctl --user'

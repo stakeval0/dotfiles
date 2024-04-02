@@ -1,0 +1,157 @@
+# zmodload zsh/zprof && zprof
+# If you come from bash you might have to change your $PATH.
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+# export ZSH=$HOME/.oh-my-zsh
+
+### Added by Zinit's installer
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+  print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+  command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+  command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+    print -P "%F{33} %F{34}Installation successful.%f%b" || \
+    print -P "%F{160} The clone has failed.%f%b"
+fi
+
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+  zdharma-continuum/zinit-annex-as-monitor \
+  zdharma-continuum/zinit-annex-bin-gem-node \
+  zdharma-continuum/zinit-annex-patch-dl \
+  zdharma-continuum/zinit-annex-rust
+
+### End of Zinit's installer chunk
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# ZSH_THEME="takumi3845"
+# ZSH_THEME="simple"
+# ZSH_THEME="essembeh"
+# ZSH_THEME="gentoo"
+# ZSH_THEME="agnoster"
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+#plugins=(
+#  zsh-autosuggestions
+#  zsh-completions
+#  zsh-syntax-highlighting
+#  #zsh-abbr # 先にインポートするとautosuggestionに干渉してしまっていた。例: `cd [sugesst]`の時にsuggestが灰ではなく白
+#  zsh-abbrev-alias # 上同様、autosuggestionより先だと干渉してしまうが、gitプラグイン内部で使いたいのでこの順序になった
+#  git
+#)
+#fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+
+#source $ZSH/oh-my-zsh.sh
+# for config_file ("$ZSH"/lib/*.zsh); do
+#   source "$config_file"
+# done
+
+zinit wait lucid is-snippet for \
+  $(echo OMZL::{nvm,history,completion,prompt_info_functions,spectrum,bzr,diagnostics,async_prompt,termsupport,correction,compfix,cli,theme-and-appearance,vcs_info,directories,grep,functions,misc,key-bindings,clipboard,git}.zsh)
+
+zinit ice wait lucid;zinit load zdharma-continuum/history-search-multi-word
+
+# Two regular plugins loaded without investigating.
+zinit ice wait lucid atload'_zsh_autosuggest_start' # これによって起動直後からautosuggestionsが有効になる
+zinit light zsh-users/zsh-autosuggestions
+zinit ice wait lucid;zinit light zdharma-continuum/fast-syntax-highlighting
+#zinit ice wait lucid;zinit light zsh-users/zsh-syntax-highlighting
+zinit light momo-lab/zsh-abbrev-alias
+
+LOCAL_ZI_LIB=$HOME/.local/share/zinit/local
+
+zinit wait lucid is-snippet for \
+      OMZP::git \
+      OMZP::docker \
+      OMZP::docker-compose \
+      OMZP::docker-machine \
+      $LOCAL_ZI_LIB/snippets/systemd
+#      OMZP::systemd \
+
+#zinit snippet OMZ::lib/git.zsh
+zinit cdclear -q
+
+setopt promptsubst
+zinit snippet $LOCAL_ZI_LIB/theme/stakeval0.zsh-theme
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# alias -g trash-empty="trash-empty -f --trash-dir $HOME/.local/share/Trash"
+alias -g edge="microsoft-edge-stable"
+if type trash-put &> /dev/null ; then
+#  abbrev-alias rm=trash-put # git rm 等に支障が出るのでグローバルエイリアスは止めた。徐々にtrpに慣れること。
+  abbrev-alias -g trp=trash-put
+  abbrev-alias trl=trash-list
+  abbrev-alias trr=trash-restore
+  abbrev-alias tre=trash-empty
+fi
+abbrev-alias py=python3 # abbrとしても設定されている
+abbrev-alias -g null='>/dev/null'
+
+alias -s cpp='(){g++ -o "${1%%.*}" $1}'
+
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
+compdef _files start
+
+# if (which zprof > /dev/null 2>&1) ;then
+#   zprof
+# fi
+
+lazynvm() {
+  unset -f nvm node npm
+  export NVM_DIR=~/.nvm
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+}
+nvm() {lazynvm; nvm $@;}
+node() {lazynvm; node $@;}
+npm() {lazynvm; npm $@;}
+
+#git_ssh(){
+#  eval `ssh-agent` >/dev/null
+#  ssh-add ~/.ssh/id_rsa
+#}
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+# zinit light-mode for \
+    # zdharma-continuum/zinit-annex-as-monitor \
+    # zdharma-continuum/zinit-annex-bin-gem-node \
+    # zdharma-continuum/zinit-annex-patch-dl \
+    # zdharma-continuum/zinit-annex-rust
