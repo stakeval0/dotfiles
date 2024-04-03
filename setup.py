@@ -26,7 +26,7 @@ def main(platform):
         for row in reader[1:]:
             if ask_yes_no(f"you need {row[0]}?"):
                 required_list.append(row[0])
-                cmd_list.append(row[1])
+                cmd_list.append(row[1] if row[1] != "./setup" else f"./{row[0]}/setup-{platform}.sh")
     if len(cmd_list) > 0:
         print("The chosen packages are:")
         print("\n".join([f"  {name}" for name in required_list]))

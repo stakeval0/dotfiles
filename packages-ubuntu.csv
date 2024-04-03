@@ -1,4 +1,8 @@
 項目,インストールコマンド
-zsh,./zsh/setup-ubuntu.sh
 trash-cli,sudo apt install trash-cli
+zsh,./setup
+fcitx5-mozc,./setup
 tailscale,curl -fsSL https://tailscale.com/install.sh | sh
+xrdp,./setup
+docker,./setup
+trouble_shoot,./setup
