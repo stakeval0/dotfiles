@@ -35,6 +35,7 @@ def main(platform):
             process.communicate(input="\n".join(cmd_list).encode())
 
 if __name__ == "__main__":
+    # `packages-[platform name].csv`があれば[platform name]をサポート済みと認識
     supported_platform_list = [re.sub("packages-(.*).csv", "\\1", list_path) for list_path in glob.glob("packages-*.csv")]
     if len(sys.argv) != 2:
         print(f"Usage: {sys.argv[0]} [platform]", file=sys.stderr)
