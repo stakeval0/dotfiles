@@ -1,6 +1,9 @@
+#!/usr/bin/env python3
 import os
 import sys
 import subprocess
+import re
+import glob
 import csv
 
 def ask_yes_no(question):
@@ -32,13 +35,11 @@ def main(platform):
             process.communicate(input="\n".join(cmd_list).encode())
 
 if __name__ == "__main__":
-    supported_platform_list = [
-        "ubuntu"
-    ]
+    supported_platform_list = [re.sub("packages-(.*).csv", "\\1", list_path) for list_path in glob.glob("packages-*.csv")]
     if len(sys.argv) != 2:
-        sys.stderr.write(f"usage: {sys.argv[0]} [platform]")
-        sys.stderr.write(f"Supported platforms:")
-        sys.stderr.write("\n".join([f"  {platform}" for platform in supported_platform_list]))
+        print(f"Usage: {sys.argv[0]} [platform]", file=sys.stderr)
+        print(f"Supported platforms:", file=sys.stderr)
+        print("\n".join([f"  {platform}" for platform in supported_platform_list]), file=sys.stderr)
         exit(1)
-    elif sys.argv[0] in supported_platform_list:
-        main(sys.argv[0])
+    elif sys.argv[1] in supported_platform_list:
+        main(sys.argv[1])
