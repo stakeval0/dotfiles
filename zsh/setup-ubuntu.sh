@@ -2,7 +2,9 @@
 
 cd $(dirname $0)
 
-sudo apt install -y git zsh # git required by zinit
+grep zsh /etc/shells >/dev/null || {
+  ./zsh-installer.sh || { echo "Setup needs zsh installation (interrupted)"; exit 1; }
+}
 chsh -s /bin/zsh
 
 ZINIT_HOME="$HOME/.local/share/zinit"
