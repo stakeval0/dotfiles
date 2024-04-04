@@ -1,5 +1,5 @@
 項目,インストールコマンド
-trash-cli,sudo apt install trash-cli
+trash-cli,./setup
 zsh,./setup
 fcitx5-mozc,./setup
 tailscale,curl -fsSL https://tailscale.com/install.sh | sh
