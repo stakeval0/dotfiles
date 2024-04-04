@@ -15,10 +15,6 @@ def ask_yes_no(question):
             print("Please enter y or n.")
 
 def main(platform):
-    # カレントディレクトリをスクリプトのディレクトリに変更
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(script_dir)
-
     required_list = []
     cmd_list = []
     with open(f"packages-{platform}.csv", 'r') as f:
@@ -35,6 +31,8 @@ def main(platform):
             process.communicate(input="\n".join(cmd_list).encode())
 
 if __name__ == "__main__":
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(script_dir)
     # `packages-[platform name].csv`があれば[platform name]をサポート済みと認識
     supported_platform_list = [re.sub("packages-(.*).csv", "\\1", list_path) for list_path in glob.glob("packages-*.csv")]
     if len(sys.argv) != 2:
