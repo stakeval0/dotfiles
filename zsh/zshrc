@@ -58,7 +58,8 @@ zinit light-mode for \
 #   source "$config_file"
 # done
 
-zinit wait lucid is-snippet for \
+# required abbrev-aliasなのでwaitにさせられない
+zinit lucid is-snippet for \
   $(echo OMZL::{nvm,history,completion,prompt_info_functions,spectrum,bzr,diagnostics,async_prompt,termsupport,correction,compfix,cli,theme-and-appearance,vcs_info,directories,grep,functions,misc,key-bindings,clipboard,git}.zsh)
 
 zinit ice wait lucid;zinit load zdharma-continuum/history-search-multi-word
@@ -68,6 +69,8 @@ zinit ice wait lucid atload'_zsh_autosuggest_start' # これによって起動�
 zinit light zsh-users/zsh-autosuggestions
 zinit ice wait lucid;zinit light zdharma-continuum/fast-syntax-highlighting
 #zinit ice wait lucid;zinit light zsh-users/zsh-syntax-highlighting
+
+# waitにするとこのファイルにabbrev-aliasを書けなくなる
 zinit light momo-lab/zsh-abbrev-alias
 
 LOCAL_ZI_LIB=$HOME/.local/share/zinit/local

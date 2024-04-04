@@ -17,9 +17,10 @@ cp zshrc $HOME/.zshrc
 bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
 zsh zshrc
 
-for snnipet in $ZINIT_HOME/snippets/OMZP::* ; do
-  target_path=$snnipet/$(basename $snnipet)
+for snippet in $ZINIT_HOME/snippets/OMZP::* ; do
+  target_path=$snippet/$(basename $snippet)
   test -s $target_path && sed -i -e 's/^alias /abbrev-alias /g' -e 's/ alias / abbrev-alias /g' $target_path
 done
+mkdir -p $ZINIT_HOME/plugins/zdharma-continuum---fast-syntax-highlighting/themes/
 cp stakeval0.ini $ZINIT_HOME/plugins/zdharma-continuum---fast-syntax-highlighting/themes/
 zsh -c "source $HOME/.zshrc; zinit light zdharma-continuum/fast-syntax-highlighting; fast-theme stakeval0"
