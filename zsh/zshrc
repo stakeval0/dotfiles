@@ -32,7 +32,7 @@ zinit light-mode for \
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ZSH_THEME="takumi3845"
+# ZSH_THEME="stakeval0"
 # ZSH_THEME="simple"
 # ZSH_THEME="essembeh"
 # ZSH_THEME="gentoo"
@@ -43,20 +43,6 @@ zinit light-mode for \
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-#plugins=(
-#  zsh-autosuggestions
-#  zsh-completions
-#  zsh-syntax-highlighting
-#  #zsh-abbr # 先にインポートするとautosuggestionに干渉してしまっていた。例: `cd [sugesst]`の時にsuggestが灰ではなく白
-#  zsh-abbrev-alias # 上同様、autosuggestionより先だと干渉してしまうが、gitプラグイン内部で使いたいのでこの順序になった
-#  git
-#)
-#fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-
-#source $ZSH/oh-my-zsh.sh
-# for config_file ("$ZSH"/lib/*.zsh); do
-#   source "$config_file"
-# done
 
 # required abbrev-aliasなのでwaitにさせられない
 zinit lucid is-snippet for \
@@ -130,12 +116,11 @@ abbrev-alias -g null='>/dev/null'
 alias -s cpp='(){g++ -o "${1%%.*}" $1}'
 
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 compdef _files start
 
-# if (which zprof > /dev/null 2>&1) ;then
-#   zprof
-# fi
+autoload -Uz compinit && compinit
 
 lazynvm() {
   unset -f nvm node npm
@@ -145,16 +130,3 @@ lazynvm() {
 nvm() {lazynvm; nvm $@;}
 node() {lazynvm; node $@;}
 npm() {lazynvm; npm $@;}
-
-#git_ssh(){
-#  eval `ssh-agent` >/dev/null
-#  ssh-add ~/.ssh/id_rsa
-#}
-
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-# zinit light-mode for \
-    # zdharma-continuum/zinit-annex-as-monitor \
-    # zdharma-continuum/zinit-annex-bin-gem-node \
-    # zdharma-continuum/zinit-annex-patch-dl \
-    # zdharma-continuum/zinit-annex-rust
