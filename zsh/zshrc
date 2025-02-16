@@ -65,9 +65,7 @@ zinit wait lucid is-snippet for \
       OMZP::git \
       OMZP::docker \
       OMZP::docker-compose \
-      OMZP::docker-machine \
       $LOCAL_ZI_LIB/snippets/systemd
-#      OMZP::systemd \
 
 #zinit snippet OMZ::lib/git.zsh
 zinit cdclear -q

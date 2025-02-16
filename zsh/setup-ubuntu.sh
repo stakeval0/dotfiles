@@ -5,6 +5,7 @@ cd $(dirname $0)
 grep zsh /etc/shells >/dev/null || {
   ./zsh-installer.sh || { echo "Setup needs zsh installation (interrupted)"; exit 1; }
 }
+echo "Switch the default shell to zsh"
 chsh -s /bin/zsh
 
 ZINIT_HOME="$HOME/.local/share/zinit"
@@ -15,7 +16,7 @@ cp zshrc $HOME/.zshrc
 # cp zsh_history $HOME/.zsh_history
 
 bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
-zsh zshrc
+zsh -i -c "source $HOME/.zshrc"
 
 for snippet in $ZINIT_HOME/snippets/OMZP::* ; do
   target_path=$snippet/$(basename $snippet)
