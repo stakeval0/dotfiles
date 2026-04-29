@@ -1,0 +1,26 @@
+#!/bin/bash
+if [ $# == 0 ] ; then
+  explorer.exe
+  exit 0
+fi
+
+function start_one(){
+  local _path=$(wslpath -w "$1")
+  if [[ -n "$_path" ]]; then
+    explorer.exe "$_path"
+    return 0
+  else
+    return 1
+  fi
+}
+
+function start(){
+  local _ret=0
+  for arg ; do
+    start_one "$arg"
+    _ret=$(( $_ret | $? ))
+  done
+  return $_ret
+}
+
+start "$@"

@@ -1,0 +1,4 @@
+#!/usr/bin/ssh-agent zsh
+ssh-add ~/.ssh/id_ed25519
+zsh
+echo "exit $0"
